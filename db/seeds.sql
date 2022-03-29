@@ -1,28 +1,26 @@
-INSERT INTO department (id, name)
-VALUES ('d001','Marketing'),
-('d002','Finance'),
-('d003','Human Resources'),
-('d004','Production'),
-('d005','Development'),
-('d006','Quality Management'),
-('d007','Sales'),
-('d008','Research'),
-('d009','Customer Service');
+-- id # is implied so not needed
+INSERT INTO `department` (name)
+VALUES ("Web Development"),
+("Accounting"),
+("Human Resources"),
+("Customer Service");
 
-INSERT INTO roleTbl (id, title, salary, department_id)
-VALUES ("Intro to JavaScript", 1),
-       ("Data Science", 2),
-       ("Linear Algebra", 3),
-       ("History of the Internet", 4),
-       ("Machine Learning", 4),
-       ("Game Design", 1 ),
-       ("Cloud Development", 1);
+INSERT INTO `role` (title, salary, department_id)
+VALUES ("Front-end Developer", 85000, 1),
+       ("Back-end Developer", 100000, 1),
+       ("Accounts Payable Rep", 41000,2),
+       ("Accounts Receivable Rep", 42000, 2),
+       ("Talent Acquisition Assistant Manager", 50000, 3),
+       ("Junior Talent Acquisition Specialist", 40000, 3),
+       ("Customer Service Representative", 44000, 4);
+       ("Customer Service Team Lead", 50000, 4);
 
-INSERT INTO employee (id, first_name, last_name, role_id, manager_id)
-VALUES ("Intro to JavaScript", 1),
-       ("Data Science", 2),
-       ("Linear Algebra", 3),
-       ("History of the Internet", 4),
-       ("Machine Learning", 4),
-       ("Game Design", 1 ),
-       ("Cloud Development", 1);
+INSERT INTO `employee` (first_name, last_name, role_id, manager_id)
+VALUES ("Olivia", "Morales", 2),
+       ("TJ", "Spencer", 4),
+       ("Harrison", "Wu", 6),
+       ("Sunny", "Patel", 8),
+       ("Marie", "Perkins" 10),
+       ("Fez", "Rossi", 12 ),
+       ("Sienna", "Takada", 14),
+       ("Hugo", "Lopez", 16);
