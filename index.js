@@ -3,6 +3,14 @@
 
    const db = require('./connection');
 
+//    const express = require('express');
+//    const PORT = process.env.PORT || 3001;
+//    const app = express();
+   
+//    // Express middleware
+//    app.use(express.urlencoded({ extended: false }));
+//    app.use(express.json());
+   
 
 //    group some questions based on type of questions asked
 // create function and inside function put the array of questions
@@ -19,7 +27,7 @@
 
    // TODO #4
 // WHEN I choose to add a department
-    // THEN I am prompted to enter TODO A: ASK QUESTION (What is:): the name of the department 
+    // THEN I am prompted TODO A: ASK QUESTION: What is the name of the department?
         // TODO B and that department is added to the database (doesn't show up now in the displayed table)
 
 
@@ -40,21 +48,21 @@
 //  and this information is updated in the database ((updated employee's role)
 
 
-   const viewDepartmentQuestions = [
-    {
-        type: 'list',
-        name: 'addmember2',
-        message: 'What would you like to do?',
-        choices: ['view all departments', 'view all roles', 'view all employees', 
-        'add a department', 'add a role', 'add an employee', 'update an employee role']
-    },
-   ];
+//    const viewDepartmentQuestions = [
+//     {
+//         type: 'list',
+//         name: 'addmember2',
+//         message: 'What would you like to do?',
+//         choices: ['view all departments', 'view all roles', 'view all employees', 
+//         'add a department', 'add a role', 'add an employee', 'update an employee role']
+//     },
+//    ];
 
    // function to initialize app
 function init() {
     inquirer.prompt(
         [
-            // ...initialQuestions,
+            ...initialQuestions,
         ]
     )};
 
