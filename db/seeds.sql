@@ -14,12 +14,12 @@ VALUES ("Front-end Developer", 85000, 1),
        ("Customer Service Rep", 44000, 4),
        ("Customer Service Team Lead", 50000, 4);
 
-INSERT INTO `employee` (first_name, last_name, `role_id`)
-VALUES ("Olivia", "Morales", 2),
-       ("TJ", "Spencer", 4),
-       ("Harrison", "Wu", 6),
-       ("Sunny", "Patel", 8),
-       ("Marie", "Perkins", 10),
-       ("Fez", "Rossi", 12),
-       ("Sienna", "Takada", 14),
-       ("Hugo", "Lopez", 16);
+INSERT INTO `employee` (first_name, last_name, role_id, manager_id)
+VALUES ("Olivia", "Morales", 1, NULL),
+       ("TJ", "Spencer", 2, NULL),
+       ("Harrison", "Wu", 3, NULL),
+       ("Sunny", "Patel", 4, NULL),
+       ("Marie", "Perkins", 5, NULL),
+       ("Fez", "Rossi", 6, 5),
+       ("Sienna", "Takada", 7, NULL),
+       ("Hugo", "Lopez", 8, NULL);
