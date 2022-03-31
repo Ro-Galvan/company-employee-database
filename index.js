@@ -105,8 +105,8 @@ viewAllRoles = () => {
         err ? console.error(err) : console.log
         ('viewAllDepartments successful!'); 
         res.json(results); 
-    });
-    
+    })};
+
     // TODO #3
     // WHEN I choose to view all employees
     // THEN I am presented with a JOINED table from all 3 tables--showing employee data, including employee ids (employee), first names(employee), last names(employee), job titles (role), departments(department), salaries (role), and managers(employee) that the employees report to
