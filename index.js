@@ -20,52 +20,91 @@
 // THEN I am presented with DEPARTMENT table showing department names and department ids
 // WRAP in a function
 
-//have a switch case for if value is --this will; be in inquirer function -then call get all departments function if that is select
- function getAllDepartments () { 
-     db.query('SELECT * FROM department', function (err, results) {  
-    //    console.log('stuff from db', results); //results can be named whatever we want but usually called results
-       console.table(results) 
-    });
-}
+//have a switch case for if value is --this will; be inside inquirer function -then call get all departments function if that is select
+//  function getAllDepartments () { 
+//      db.query('SELECT * FROM department', function (err, results) {  
+//     //    console.log('stuff from db', results); //results can be named whatever we want but usually called results
+//        console.table(results) 
+//     });
+// }
     
     // TODO #2
     // WHEN I choose to view all roles
     // THEN I am presented with a JOINED TABLE from 2 tables-- the job title (role), role id (?), the department that role belongs to (department), and the salary (role) for that role
-    db.query(`SELECT role.id, role.title, role.salary, department.name
-    FROM role 
-    JOIN department 
-    ON department.id=role.department_id`, 
-    function (err, results) {  
-        res.json(results) 
-    });
+    // db.query(`SELECT role.id, role.title, role.salary, department.name
+    // FROM role 
+    // JOIN department 
+    // ON department.id=role.department_id`, 
+    // function (err, results) {  
+    //     res.json(results) 
+    // });
     
     // TODO #3
     // WHEN I choose to view all employees
     // THEN I am presented with a JOINED table from all 3 tables--showing employee data, including employee ids (employee), first names(employee), last names(employee), job titles (role), departments(department), salaries (role), and managers(employee) that the employees report to
-    db.query('SELECT * FROM department', function (err, results) {  
-        res.json(results) 
-    });
-    // TODO #8:  the video shows the added employee when view all employees is selected--9 employees now
-     
-   
+    // db.query('SELECT * FROM department', function (err, results) {  
+    //     res.json(results) 
+    // });
 
 //    group some questions based on type of questions asked
 // create function and inside function put the array of questions
 
-   const initialQuestions = [
-    {
+const menuQuestions = () => {
+    inquirer.prompt([
+        {
         type: 'list',
-        name: 'initialQ',
+        name: 'mainMenu',
         message: 'What would you like to do?',
         choices: [
-            {
-                name: "View all departments",
-                value: "VIEW_DEPARTMENTS"
-            },
-            'view all roles', 'view all employees', 
-        'add a department', 'add a role', 'add an employee', 'update an employee role']
-    },
-   ];
+            {name: 'View all Employees', value: 'view_all_employees'},
+            {name: 'Add Employee', value: 'add_employee'},
+            {name: 'Update Employee Role', value: 'update_employee_role'},
+            {name: 'View All Roles', value: 'view_all_roles'}, 
+            {name: 'Add Role', value: 'add_role'},
+            {name: 'View All Departments', value: 'view_all_departments'},
+            {name: 'Add Department', value: 'add_department'},
+            {name: 'Exit', value: 'exit'},
+        ]
+    }
+   ])
+   .then((answers) => {
+    const mainMenu = answers;
+
+    if (mainMenu === 'View All Employees') {
+        viewAllEmployees();
+    }
+
+    if (mainMenu === 'Add Employee') {
+      viewAllDepartments();
+    }
+
+    if (mainMenu === 'Update Employee Role') {
+        viewEmployeesByDepartment();
+    }
+
+    if (mainMenu === 'View All Roles') {
+        addEmployee();
+    }
+
+    if (mainMenu=== 'Add Role') {
+        removeEmployee();
+    }
+
+    if (mainMenu === 'View All Departments') {
+        updateEmployeeRole();
+    }
+
+    if (mainMenu === 'Add Department') {
+        updateEmployeeManager();
+    }
+
+    if (mainMenu=== 'Exit') {
+        connection.end();
+    }
+});
+};
+
+menuQuestions();
 
    // TODO #4
 // WHEN I choose to add a department
@@ -77,12 +116,12 @@
 // WHEN I choose to add a role
     // TODO A ASK QUESTIONS: THEN I am prompted to enter the 1.What is the name of the role?, 2.What is their salary? , 3.Which department does the role belong to?
         // TODO B and that role is added to the database
-const addRoleQuestions = [
-            {
-                name: 'addRole',
-                message: 'What is the name of the role?',
-            },
-           ];    
+// const addRoleQuestions = [
+//             {
+//                 name: 'addRole',
+//                 message: 'What is the name of the role?',
+//             },
+//            ];    
 
 
 // TODO #6
@@ -106,25 +145,27 @@ const addRoleQuestions = [
 //     },
 //    ];
 
+// TODO #8:  the video shows the added employee when view all employees is selected--9 employees now
+
    // function to initialize app
-function init() {
-    inquirer.prompt(
-        [
-            ...initialQuestions,
-            // ...addRoleQuestions,
-        ]
-    ).then((answers) => {
-        console.log(answers);
-    }).catch((error) => {
-            if (error) {
-                console.log('Something else went wrong', error);
-            } else {
-                console.log('success');
-            }
-          });
-};
+// function init() {
+//     inquirer.prompt(
+//         [
+//             ...initialQuestions,
+//             // ...addRoleQuestions,
+//         ]
+//     ).then((answers) => {
+//         console.log(answers);
+//     }).catch((error) => {
+//             if (error) {
+//                 console.log('Something else went wrong', error);
+//             } else {
+//                 console.log('success');
+//             }
+//           });
+// };
 
 
 
 // Function call to initialize app
-init();
+// init();
