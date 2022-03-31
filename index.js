@@ -12,8 +12,6 @@ const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-
-
 //    group some questions based on type of questions asked
 // create function and inside function put the array of questions
 
@@ -24,7 +22,7 @@ const menuQuestions = () => {
         name: 'mainMenu',
         message: 'What would you like to do?',
         choices: [
-            {name: 'View all Employees', value: 'view_all_employees'},
+            {name: 'View all Employees', value: 'view_all_employees'},  //need to grab value
             {name: 'Add Employee', value: 'add_employee'},
             {name: 'Update Employee Role', value: 'update_employee_role'},
             {name: 'View All Roles', value: 'view_all_roles'}, 
@@ -36,66 +34,48 @@ const menuQuestions = () => {
     }
    ])
    .then((answers) => {
-    const mainMenu = answers;
-
-    if (mainMenu === 'View All Employees') {
+    const {mainMenu} = answers;
+    if (mainMenu === 'view_all_employees') {
         viewAllEmployees();
     }
-
-    if (mainMenu === 'Add Employee') {
+    if (mainMenu === 'add_employee') {
         addEmployee();
     }
-
-    if (mainMenu === 'Update Employee Role') {
+    if (mainMenu === 'update_employee_role') {
         updateEmployeeRole();
     }
-
-    if (mainMenu === 'View All Roles') {
+    if (mainMenu === 'view_all_roles') {
         viewAllRoles();
     }
-
-    if (mainMenu=== 'Add Role') {
+    if (mainMenu=== 'add_role') {
         addRole();
     }
-
-    if (mainMenu === 'View All Departments') {
+    if (mainMenu === 'view_all_departments') {
         viewAllDepartments();
     }
-
-    if (mainMenu === 'Add Department') {
+    if (mainMenu === 'add_department') {
         addDepartment();
     }
-
     if (mainMenu=== 'Exit') {
         connection.end();
     }
 });
 };
-
 menuQuestions();
 
-   //  // Query database
-// put each query into its own function 
-
 // TODO #1
-// WHEN I choose to view all departments ?
-// THEN I am presented with DEPARTMENT table showing department names and department ids
-// WRAP in a function
-
-//have a switch case for if value is --this will; be inside inquirer function -then call get all departments function if that is select
+// view all departments 
 viewAllDepartments = () => { 
      db.query('SELECT * FROM department', (err, results) => {
         err ? console.error(err) : console.log
         ('viewAllDepartments successful!'); 
     //    console.log('stuff from db', results); //results can be named whatever we want but usually called results
-       console.table(results); 
-    //    res.json(results) 
+       console.table(results);
     });
+    menuQuestions();
 }
 
  // TODO #2
-    // WHEN I choose to view all roles
-    // THEN I am presented with a JOINED TABLE from 2 tables-- the job title (role), role id (?), the department that role belongs to (department), and the salary (role) for that role
 viewAllRoles = () => { 
     db.query(`SELECT role.id, role.title, role.salary, department.name
     FROM role 
@@ -104,8 +84,10 @@ viewAllRoles = () => {
     (err, results) => {
         err ? console.error(err) : console.log
         ('viewAllDepartments successful!'); 
-        res.json(results); 
+        console.table(results);
     })};
+    menuQuestions();
+
 
     // TODO #3
     // WHEN I choose to view all employees
@@ -130,7 +112,6 @@ viewAllRoles = () => {
 //                 message: 'What is the name of the role?',
 //             },
 //            ];    
-
 
 // TODO #6
 // WHEN I choose to add an employee
