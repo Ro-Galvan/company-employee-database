@@ -1,50 +1,18 @@
 // importing inquirer package
-   const inquirer = require('inquirer');
-    require('console.table');
-   const db = require('./connection');
+const inquirer = require('inquirer');
+// require('console.table');
+const cTable = require('console.table');
+const db = require('./connection');
 
-   const express = require('express');
-   const PORT = process.env.PORT || 3001;
-   const app = express();
-   
-   // Express middleware
-   app.use(express.urlencoded({ extended: false }));
-   app.use(express.json());
+const express = require('express');
+const PORT = process.env.PORT || 3001;
+const app = express();
+
+// Express middleware
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 
-   //  // Query database
-// put each query into its own function 
-
-// TODO #1
-// WHEN I choose to view all departments ?
-// THEN I am presented with DEPARTMENT table showing department names and department ids
-// WRAP in a function
-
-//have a switch case for if value is --this will; be inside inquirer function -then call get all departments function if that is select
-//  function getAllDepartments () { 
-//      db.query('SELECT * FROM department', function (err, results) {  
-//     //    console.log('stuff from db', results); //results can be named whatever we want but usually called results
-//        console.table(results) 
-//     });
-// }
-    
-    // TODO #2
-    // WHEN I choose to view all roles
-    // THEN I am presented with a JOINED TABLE from 2 tables-- the job title (role), role id (?), the department that role belongs to (department), and the salary (role) for that role
-    // db.query(`SELECT role.id, role.title, role.salary, department.name
-    // FROM role 
-    // JOIN department 
-    // ON department.id=role.department_id`, 
-    // function (err, results) {  
-    //     res.json(results) 
-    // });
-    
-    // TODO #3
-    // WHEN I choose to view all employees
-    // THEN I am presented with a JOINED table from all 3 tables--showing employee data, including employee ids (employee), first names(employee), last names(employee), job titles (role), departments(department), salaries (role), and managers(employee) that the employees report to
-    // db.query('SELECT * FROM department', function (err, results) {  
-    //     res.json(results) 
-    // });
 
 //    group some questions based on type of questions asked
 // create function and inside function put the array of questions
@@ -75,27 +43,27 @@ const menuQuestions = () => {
     }
 
     if (mainMenu === 'Add Employee') {
-      viewAllDepartments();
-    }
-
-    if (mainMenu === 'Update Employee Role') {
-        viewEmployeesByDepartment();
-    }
-
-    if (mainMenu === 'View All Roles') {
         addEmployee();
     }
 
-    if (mainMenu=== 'Add Role') {
-        removeEmployee();
-    }
-
-    if (mainMenu === 'View All Departments') {
+    if (mainMenu === 'Update Employee Role') {
         updateEmployeeRole();
     }
 
+    if (mainMenu === 'View All Roles') {
+        viewAllRoles();
+    }
+
+    if (mainMenu=== 'Add Role') {
+        addRole();
+    }
+
+    if (mainMenu === 'View All Departments') {
+        viewAllDepartments();
+    }
+
     if (mainMenu === 'Add Department') {
-        updateEmployeeManager();
+        addDepartment();
     }
 
     if (mainMenu=== 'Exit') {
@@ -105,6 +73,46 @@ const menuQuestions = () => {
 };
 
 menuQuestions();
+
+   //  // Query database
+// put each query into its own function 
+
+// TODO #1
+// WHEN I choose to view all departments ?
+// THEN I am presented with DEPARTMENT table showing department names and department ids
+// WRAP in a function
+
+//have a switch case for if value is --this will; be inside inquirer function -then call get all departments function if that is select
+viewAllDepartments = () => { 
+     db.query('SELECT * FROM department', (err, results) => {
+        err ? console.error(err) : console.log
+        ('viewAllDepartments successful!'); 
+    //    console.log('stuff from db', results); //results can be named whatever we want but usually called results
+       console.table(results); 
+    //    res.json(results) 
+    });
+}
+
+ // TODO #2
+    // WHEN I choose to view all roles
+    // THEN I am presented with a JOINED TABLE from 2 tables-- the job title (role), role id (?), the department that role belongs to (department), and the salary (role) for that role
+viewAllRoles = () => { 
+    db.query(`SELECT role.id, role.title, role.salary, department.name
+    FROM role 
+    JOIN department 
+    ON department.id=role.department_id`, 
+    (err, results) => {
+        err ? console.error(err) : console.log
+        ('viewAllDepartments successful!'); 
+        res.json(results); 
+    });
+    
+    // TODO #3
+    // WHEN I choose to view all employees
+    // THEN I am presented with a JOINED table from all 3 tables--showing employee data, including employee ids (employee), first names(employee), last names(employee), job titles (role), departments(department), salaries (role), and managers(employee) that the employees report to
+    // db.query('SELECT * FROM department', function (err, results) {  
+    //     res.json(results) 
+    // });
 
    // TODO #4
 // WHEN I choose to add a department
@@ -146,26 +154,3 @@ menuQuestions();
 //    ];
 
 // TODO #8:  the video shows the added employee when view all employees is selected--9 employees now
-
-   // function to initialize app
-// function init() {
-//     inquirer.prompt(
-//         [
-//             ...initialQuestions,
-//             // ...addRoleQuestions,
-//         ]
-//     ).then((answers) => {
-//         console.log(answers);
-//     }).catch((error) => {
-//             if (error) {
-//                 console.log('Something else went wrong', error);
-//             } else {
-//                 console.log('success');
-//             }
-//           });
-// };
-
-
-
-// Function call to initialize app
-// init();
