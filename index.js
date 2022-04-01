@@ -32,8 +32,8 @@ const menuQuestions = () => {
             {name: 'Exit', value: 'exit'},
         ]
     }
-   ])
-   .then((answers) => {
+])
+.then((answers) => {
     const {mainMenu} = answers;
     if (mainMenu === 'view_all_employees') {
         viewAllEmployees();
@@ -61,77 +61,137 @@ const menuQuestions = () => {
     }
 });
 };
-menuQuestions();
+// console.log('does this work', menuQuestions);
 
+menuQuestions();
 // TODO #1
 // view all departments 
-viewAllDepartments = () => { 
+const viewAllDepartments = () => { 
      db.query('SELECT * FROM department', (err, results) => {
-        err ? console.error(err) : console.log
-        ('viewAllDepartments successful!'); 
-    //    console.log('stuff from db', results); //results can be named whatever we want but usually called results
+        err ? console.error(err) : 
+        // console.log
+        // ('viewAllDepartments successful!'); 
        console.table(results);
+       menuQuestions();
     });
-    menuQuestions();
 }
 
  // TODO #2
-viewAllRoles = () => { 
+ const viewAllRoles = () => { 
     db.query(`SELECT role.id, role.title, role.salary, department.name
     FROM role 
     JOIN department 
     ON department.id=role.department_id`, 
     (err, results) => {
-        err ? console.error(err) : console.log
-        ('viewAllDepartments successful!'); 
+        err ? console.error(err) : 
+        console.log
+        ('viewAllRoles successful!'); 
         console.table(results);
+        menuQuestions();
     })};
-    menuQuestions();
 
 
     // TODO #3
     // WHEN I choose to view all employees
     // THEN I am presented with a JOINED table from all 3 tables--showing employee data, including employee ids (employee), first names(employee), last names(employee), job titles (role), departments(department), salaries (role), and managers(employee) that the employees report to
-    // db.query('SELECT * FROM department', function (err, results) {  
-    //     res.json(results) 
-    // });
+ const viewAllEmployees = () => { 
+    db.query(`SELECT employee.id,
+        employee.first_name,
+        employee.last_name,
+        role.title,
+        department.name AS 'department',
+        role.salary,
+        employee.manager_id
+      FROM employee
+      JOIN role
+        ON role.id = employee.role_id
+      JOIN department
+        ON department.id=role.department_id`,
+        (err, results) => {
+            err ? console.error(err) : 
+            // console.log
+            // ('viewAllEmployees successful!'); 
+            console.table(results);
+            menuQuestions(); 
+        })};
 
    // TODO #4
 // WHEN I choose to add a department
     // THEN I am prompted TODO A: ASK QUESTION: What is the name of the department?
-        // TODO B and that department is added to the database (doesn't show up now in the displayed table)
+        // TODO B and that department is added to the database 
 
+ const addDepartment = () => { 
+    inquirer.prompt([
+    {
+        name: 'newdepartment', //need to grab value
+        message: 'What is the name of the department you would like to add?',
+    },
+    ]).then((answers) => {
+        db.query(`INSERT INTO department (name) VALUES (?)`,
+        [answers.newdepartment],
+        (err, results) => {
+            err ? console.error(err) : console.log
+            ('Department has been added'); 
+            console.table(results);
+            viewAllDepartments();
+            menuQuestions();
+        }
+        )})
+    };
 
 // TODO #5
 // WHEN I choose to add a role
     // TODO A ASK QUESTIONS: THEN I am prompted to enter the 1.What is the name of the role?, 2.What is their salary? , 3.Which department does the role belong to?
-        // TODO B and that role is added to the database
-// const addRoleQuestions = [
-//             {
-//                 name: 'addRole',
-//                 message: 'What is the name of the role?',
-//             },
-//            ];    
+        // TODO B and that role is added to the database 
+
+const addRole = () => { 
+    inquirer.prompt([
+        {
+            name: 'addNewRole',
+            message: 'What is the name of the role?',
+        },
+        {
+            name: 'addNewSalary',
+            message: 'What is their salary?',
+        },
+        {
+            name: 'addNewDepartment',
+            message: 'Which department does the role belong to?',
+        },
+    ]).then((answers) => {
+        db.query(`INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)`,
+        [answers.addNewRole,
+        answers.addNewSalary,
+        answers.addNewDepartment],
+        (err, results) => {
+            err ? console.error(err) : console.log
+            ('Role has been added'); 
+            viewAllRoles();
+        } 
+        )})
+};
 
 // TODO #6
 // WHEN I choose to add an employee
     // TODO A ASK QUESTIONS: 1.What is the employee’s first name?, 2.What is the employee’s last name?, 3.What is the employee’s role?, 4.What is the employee’s manager? 
     // and that employee is added to the database
 
+// const addEmployee = () => { 
+
+//     }
+
 // TODO #7
 // WHEN I choose to update an employee role
 // THEN I am prompted (ASK ?: Which employee's role do you want to update (show list of all employees)? 2. Which role do you want to assign the selected employee (show list of all roles)? 
 //  and this information is updated in the database ((updated employee's role)
 
+// const updateEmployeeRole = () => { 
 
-//    const TESTviewDepartmentQuestions = [
-//     {
-//         type: 'list',
-//         name: 'addmember2',
-//         message: 'What would you like to do?',
-//         choices: ['view all departments', 'view all roles', 'view all employees', 
-//         'add a department', 'add a role', 'add an employee', 'update an employee role']
-//     },
-//    ];
+// }
+
 
 // TODO #8:  the video shows the added employee when view all employees is selected--9 employees now
+// PENDING**= () => { 
+
+
+// }
