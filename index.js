@@ -4,10 +4,6 @@ const inquirer = require('inquirer');
 const cTable = require('console.table');
 const db = require('./connection');
 
-// const EventEmitter = require('eventemitter3');
-// const emitter = new EventEmitter();
-// emitter.setMaxListeners(50);
-
 const express = require('express');
 const PORT = process.env.PORT || 3001;
 const app = express();

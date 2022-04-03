@@ -2,11 +2,11 @@
 
 
 # Description
-  I built a command-line application from scratch to manage a company's employee database, using Node.js, Inquirer, and MySQL.
+  I built a command-line application from scratch to manage a company's employee database, using Node.js, Inquirer, and MySQL. Anyone can use it to view information about current employees such as department name, salary, role, who their manager is and can add, and update as needed. 
 
 [link to GitHub repository](https://github.com/Ro-Galvan/company-employee-database)
 
-[video demo](#)
+[video demo](https://drive.google.com/file/d/1q0CoRG0lNTK8T5aPeScxcWJIoKPFRDCp/view?usp=sharing)
 
 # Table of Contents
   - [Installation](#installation)
@@ -18,10 +18,11 @@
 - Inquirer 
 - MySQL2 
 - console.table
-- Once you are in the server.js file you can run npm start to run the application
+- In the terminal run mysql -u root or mysql -u root -p (if you have a password) then enter SOURCE db/schema.sql;  then SOURCE db/seeds.sql;  then quit
+- Once you are in the server.js file you can run npm start to run the application and start the questions prompt and to display the tables
 
 # Usage
-![Website Overview](./)
+[video demo](https://drive.google.com/file/d/1q0CoRG0lNTK8T5aPeScxcWJIoKPFRDCp/view?usp=sharing)
 # License
  MIT
 # Questions
