@@ -12,8 +12,6 @@ const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-//    group some questions based on type of questions asked
-// create function and inside function put the array of questions
 
 const menuQuestions = () => {
     inquirer.prompt([
@@ -56,27 +54,24 @@ const menuQuestions = () => {
     if (mainMenu === 'add_department') {
         addDepartment();
     }
-    if (mainMenu=== 'Exit') {
+    if (mainMenu=== 'exit') {
         connection.end();
     }
 });
 };
-// console.log('does this work', menuQuestions);
 
 menuQuestions();
-// TODO #1
-// view all departments 
+
+// #1 -view all departments 
 const viewAllDepartments = () => { 
      db.query('SELECT * FROM department', (err, results) => {
         err ? console.error(err) : 
-        // console.log
-        // ('viewAllDepartments successful!'); 
        console.table(results);
        menuQuestions();
     });
 }
 
- // TODO #2
+ // TODO #2 view all roles
  const viewAllRoles = () => { 
     db.query(`SELECT role.id, role.title, role.salary, department.name
     FROM role 
@@ -91,9 +86,7 @@ const viewAllDepartments = () => {
     })};
 
 
-    // TODO #3
-    // WHEN I choose to view all employees
-    // THEN I am presented with a JOINED table from all 3 tables--showing employee data, including employee ids (employee), first names(employee), last names(employee), job titles (role), departments(department), salaries (role), and managers(employee) that the employees report to
+// #3 view all employees
  const viewAllEmployees = () => { 
     db.query(`SELECT employee.id,
         employee.first_name,
@@ -109,21 +102,15 @@ const viewAllDepartments = () => {
         ON department.id=role.department_id`,
         (err, results) => {
             err ? console.error(err) : 
-            // console.log
-            // ('viewAllEmployees successful!'); 
             console.table(results);
             menuQuestions(); 
         })};
 
-   // TODO #4
-// WHEN I choose to add a department
-    // THEN I am prompted TODO A: ASK QUESTION: What is the name of the department?
-        // TODO B and that department is added to the database 
-
+//  #4 -add a department
  const addDepartment = () => { 
     inquirer.prompt([
     {
-        name: 'newdepartment', //need to grab value
+        name: 'newdepartment', 
         message: 'What is the name of the department you would like to add?',
     },
     ]).then((answers) => {
@@ -134,16 +121,11 @@ const viewAllDepartments = () => {
             ('Department has been added'); 
             console.table(results);
             viewAllDepartments();
-            menuQuestions();
         }
         )})
     };
 
-// TODO #5
-// WHEN I choose to add a role
-    // TODO A ASK QUESTIONS: THEN I am prompted to enter the 1.What is the name of the role?, 2.What is their salary? , 3.Which department does the role belong to?
-        // TODO B and that role is added to the database 
-
+// #5 add a role
 const addRole = () => { 
     inquirer.prompt([
         {
@@ -156,7 +138,7 @@ const addRole = () => {
         },
         {
             name: 'addNewDepartment',
-            message: 'Which department does the role belong to?',
+            message: 'Which department id does the role belong to?',
         },
     ]).then((answers) => {
         db.query(`INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)`,
@@ -171,27 +153,72 @@ const addRole = () => {
         )})
 };
 
-// TODO #6
-// WHEN I choose to add an employee
-    // TODO A ASK QUESTIONS: 1.What is the employee’s first name?, 2.What is the employee’s last name?, 3.What is the employee’s role?, 4.What is the employee’s manager? 
-    // and that employee is added to the database
+// #6 -add an employee
+const addEmployee = () => { 
+    inquirer.prompt([
+        {
+            name: 'addNewFirstName',
+            message: `What is the employee/'s first name?`,
+        },
+        {
+            name: 'addNewLastName',
+            message: `What is the employee/'s last name?`,
+        },
+        {
+            name: 'addNewRole2',
+            message: `What is the employee/'s role?`,
+        },
+        {
+            name: 'addNewManager',
+            message: `Who is the employee/'s manager?`,
+        },
+    ]).then((answers) => {
+        db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)`,
+        [answers.addNewFirstName,
+        answers.addNewLastName,
+        answers.addNewRole2,
+        answers.addNewManager],
+        (err, results) => {
+            err ? console.error(err) : console.log
+            ('New employee has been added'); 
+            viewAllEmployees();
+        } 
+        )})
+    };
 
-// const addEmployee = () => { 
-
-//     }
-
-// TODO #7
-// WHEN I choose to update an employee role
-// THEN I am prompted (ASK ?: Which employee's role do you want to update (show list of all employees)? 2. Which role do you want to assign the selected employee (show list of all roles)? 
-//  and this information is updated in the database ((updated employee's role)
-
-// const updateEmployeeRole = () => { 
-
-// }
-
-
-// TODO #8:  the video shows the added employee when view all employees is selected--9 employees now
-// PENDING**= () => { 
-
-
-// }
+// #7 update an employee role
+const updateEmployeeRole = () => { 
+    inquirer.prompt([
+        {
+            type: 'list',
+            name: 'selectEmployee',
+            message: `Select the employee you want to update the role for?`,
+            choices: [
+                {name: 'Olivia Morales', value: 'oliviaMorales'},  //need to grab value
+                {name: 'TJ Spencer', value: 'tjSpencer'},
+                {name: 'Harrison Wu', value: 'harrisonWu'},
+                {name: 'Sunny Patel', value: 'sunnyPatel'},
+                {name: 'Marie Perkins', value: 'mariePerkins'},
+                {name: 'Fez Rossi', value: 'fezRossi'},
+                {name: 'Sienna Takada', value: 'siennaTakada'},
+                {name: 'Hugo Lopez', value: 'hugoLopez'},
+            ]
+        },
+        {
+            type: 'list',
+            name: 'selectRole',
+            message: `Which role do you want to assign the selected employee to?`,
+            choices: [
+                {name: 'Front-end Developer', value: 'frontendDeveloper'},
+                {name: 'Back-end Developer', value: 'backendDeveloper'},
+                {name: 'Accounts Payable Rep', value: 'accountsPayableRep'},
+                {name: 'Accounts Receivable Rep', value: 'accountsReceivableRep'},
+                {name: 'Talent Acquisition Manager', value: 'talentAcquisitionManager'},
+                {name: 'Talent Acquisition Specialist', value: 'talentAcquisitionSpecialist'},
+                {name: 'Customer Service Rep', value: 'customerServiceRep'},
+                {name: 'Customer Service Team Lead', value: 'customerServiceTeamLead'},
+            ]
+            // menuQuestions();
+        },
+    ])
+};
