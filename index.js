@@ -1,8 +1,12 @@
 // importing inquirer package
 const inquirer = require('inquirer');
-// require('console.table');
+
 const cTable = require('console.table');
 const db = require('./connection');
+
+// const EventEmitter = require('eventemitter3');
+// const emitter = new EventEmitter();
+// emitter.setMaxListeners(50);
 
 const express = require('express');
 const PORT = process.env.PORT || 3001;
@@ -55,7 +59,7 @@ const menuQuestions = () => {
         addDepartment();
     }
     if (mainMenu=== 'exit') {
-        connection.end();
+        db.end();
     }
 });
 };
@@ -79,8 +83,8 @@ const viewAllDepartments = () => {
     ON department.id=role.department_id`, 
     (err, results) => {
         err ? console.error(err) : 
-        console.log
-        ('viewAllRoles successful!'); 
+        // console.log
+        // ('viewAllRoles successful!'); 
         console.table(results);
         menuQuestions();
     })};
@@ -158,19 +162,19 @@ const addEmployee = () => {
     inquirer.prompt([
         {
             name: 'addNewFirstName',
-            message: `What is the employee/'s first name?`,
+            message: `What is the employee's first name?`,
         },
         {
             name: 'addNewLastName',
-            message: `What is the employee/'s last name?`,
+            message: `What is the employee's last name?`,
         },
         {
             name: 'addNewRole2',
-            message: `What is the employee/'s role?`,
+            message: `What is the employee's role?`,
         },
         {
             name: 'addNewManager',
-            message: `Who is the employee/'s manager?`,
+            message: `Who is the employee's manager?`,
         },
     ]).then((answers) => {
         db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)`,
@@ -218,7 +222,25 @@ const updateEmployeeRole = () => {
                 {name: 'Customer Service Rep', value: 'customerServiceRep'},
                 {name: 'Customer Service Team Lead', value: 'customerServiceTeamLead'},
             ]
-            // menuQuestions();
         },
-    ])
+    ]).then((answers) => {
+        menuQuestions();
+        console.log(answers, 'updated successfully');
+    //     db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)`,
+    //     [answers.addNewFirstName,
+    //     answers.addNewLastName,
+    //     answers.addNewRole2,
+    //     answers.addNewManager],
+    //     (err, results) => {
+    //         err ? console.error(err) : console.log
+    //         ('employee has been updated'); 
+    //         viewAllEmployees();
+        // } 
+        // )})
+    })
+    // ])
 };
+
+// finalQuestions = () => {
+//     menuQuestions();
+// };
